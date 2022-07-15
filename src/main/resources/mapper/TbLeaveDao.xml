@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ht.emos.mapper.TbLeaveDao">
+
+    <resultMap id="BaseResultMap" type="com.ht.emos.proj.TbLeave">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="OTHER"/>
+            <result property="reason" column="reason" jdbcType="VARCHAR"/>
+            <result property="start" column="start" jdbcType="TIMESTAMP"/>
+            <result property="end" column="end" jdbcType="TIMESTAMP"/>
+            <result property="days" column="days" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="TINYINT"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="instanceId" column="instance_id" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,reason,
+        start,end,days,
+        type,status,instance_id,
+        create_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_leave
+        where  id = #{id,jdbcType=INTEGER} 
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_leave
+        where  id = #{id,jdbcType=INTEGER} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ht.emos.proj.TbLeave" useGeneratedKeys="true">
+        insert into tb_leave
+        ( id,user_id,reason
+        ,start,end,days
+        ,type,status,instance_id
+        ,create_time)
+        values (#{id,jdbcType=INTEGER},#{userId,jdbcType=OTHER},#{reason,jdbcType=VARCHAR}
+        ,#{start,jdbcType=TIMESTAMP},#{end,jdbcType=TIMESTAMP},#{days,jdbcType=VARCHAR}
+        ,#{type,jdbcType=TINYINT},#{status,jdbcType=TINYINT},#{instanceId,jdbcType=VARCHAR}
+        ,#{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ht.emos.proj.TbLeave" useGeneratedKeys="true">
+        insert into tb_leave
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="userId != null">user_id,</if>
+                <if test="reason != null">reason,</if>
+                <if test="start != null">start,</if>
+                <if test="end != null">end,</if>
+                <if test="days != null">days,</if>
+                <if test="type != null">type,</if>
+                <if test="status != null">status,</if>
+                <if test="instanceId != null">instance_id,</if>
+                <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=INTEGER},</if>
+                <if test="userId != null">#{userId,jdbcType=OTHER},</if>
+                <if test="reason != null">#{reason,jdbcType=VARCHAR},</if>
+                <if test="start != null">#{start,jdbcType=TIMESTAMP},</if>
+                <if test="end != null">#{end,jdbcType=TIMESTAMP},</if>
+                <if test="days != null">#{days,jdbcType=VARCHAR},</if>
+                <if test="type != null">#{type,jdbcType=TINYINT},</if>
+                <if test="status != null">#{status,jdbcType=TINYINT},</if>
+                <if test="instanceId != null">#{instanceId,jdbcType=VARCHAR},</if>
+                <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ht.emos.proj.TbLeave">
+        update tb_leave
+        <set>
+                <if test="userId != null">
+                    user_id = #{userId,jdbcType=OTHER},
+                </if>
+                <if test="reason != null">
+                    reason = #{reason,jdbcType=VARCHAR},
+                </if>
+                <if test="start != null">
+                    start = #{start,jdbcType=TIMESTAMP},
+                </if>
+                <if test="end != null">
+                    end = #{end,jdbcType=TIMESTAMP},
+                </if>
+                <if test="days != null">
+                    days = #{days,jdbcType=VARCHAR},
+                </if>
+                <if test="type != null">
+                    type = #{type,jdbcType=TINYINT},
+                </if>
+                <if test="status != null">
+                    status = #{status,jdbcType=TINYINT},
+                </if>
+                <if test="instanceId != null">
+                    instance_id = #{instanceId,jdbcType=VARCHAR},
+                </if>
+                <if test="createTime != null">
+                    create_time = #{createTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ht.emos.proj.TbLeave">
+        update tb_leave
+        set 
+            user_id =  #{userId,jdbcType=OTHER},
+            reason =  #{reason,jdbcType=VARCHAR},
+            start =  #{start,jdbcType=TIMESTAMP},
+            end =  #{end,jdbcType=TIMESTAMP},
+            days =  #{days,jdbcType=VARCHAR},
+            type =  #{type,jdbcType=TINYINT},
+            status =  #{status,jdbcType=TINYINT},
+            instance_id =  #{instanceId,jdbcType=VARCHAR},
+            create_time =  #{createTime,jdbcType=TIMESTAMP}
+        where   id = #{id,jdbcType=INTEGER} 
+    </update>
+</mapper>
