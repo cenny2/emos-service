@@ -161,6 +161,12 @@
             <artifactId>core</artifactId>
             <version>3.3.3</version>
         </dependency>
+<!--        测试说明文档：SpringDoc-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-spring-boot-2-webmvc</artifactId>
+            <version>3.1.5</version>
+        </dependency>
 
     </dependencies>
 

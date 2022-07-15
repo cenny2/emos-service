@@ -3,14 +3,14 @@ server:
     threads:
       acceptors: 4
       selectors: 8
-  port: 8090
+  port: 9090
   servlet:
-    context-path: /emos-api
+    context-path: /emos-service
     multipart:
       max-request-size: 10MB
       max-file-size: 2MB
 
-#      Êý¾Ý¿âÁ¬½ÓÐÅÏ¢
+#      ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -61,3 +61,12 @@ logging:
     com.example.emos.wx.db.dao: warn
   pattern:
     console: "%d{yyyy/MM/dd HH:mm:ss}  %-5level  %msg%n"
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /doc-api.html
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: on
+
