@@ -1,6 +1,8 @@
 package com.ht.emos.mapper;
 
 import com.ht.emos.proj.TbUser;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +14,7 @@ import java.util.Set;
 * @createDate 2022-07-14 22:04:45
 * @Entity com.ht.emos.proj.TbUser
 */
+@Mapper
 public interface TbUserDao {
 
     int deleteByPrimaryKey(Long id);
