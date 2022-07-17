@@ -1,5 +1,6 @@
 package com.ht.emos.mapper;
 
+import com.ht.emos.controller.LoginForm;
 import com.ht.emos.proj.TbUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.Mapping;
@@ -29,6 +30,8 @@ public interface TbUserDao {
 
     int updateByPrimaryKey(TbUser record);
 
+    public TbUser searchByUsername(String username);
+
     public Set<String> searchUserPermissions(int userId);
 
     public HashMap searchById(int userId);
@@ -45,4 +48,5 @@ public interface TbUserDao {
 
     public ArrayList<HashMap> searchAllUser();
 
+    TbUser checkPassword(String username,String password);
 }

@@ -21,6 +21,7 @@
             <result property="deptId" column="dept_id" jdbcType="OTHER"/>
             <result property="status" column="status" jdbcType="TINYINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="salt" column="salt" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -29,7 +30,7 @@
         name,sex,tel,
         email,hiredate,role,
         root,dept_id,status,
-        create_time
+        create_time,salt
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -50,13 +51,13 @@
         ,name,sex,tel
         ,email,hiredate,role
         ,root,dept_id,status
-        ,create_time)
+        ,create_time,salt)
         values (#{id,jdbcType=INTEGER},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}
         ,#{openId,jdbcType=VARCHAR},#{nickname,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR}
         ,#{name,jdbcType=VARCHAR},#{sex,jdbcType=OTHER},#{tel,jdbcType=CHAR}
         ,#{email,jdbcType=VARCHAR},#{hiredate,jdbcType=DATE},#{role,jdbcType=OTHER}
         ,#{root,jdbcType=TINYINT},#{deptId,jdbcType=OTHER},#{status,jdbcType=TINYINT}
-        ,#{createTime,jdbcType=TIMESTAMP})
+        ,#{createTime,jdbcType=TIMESTAMP},#{salt,jdbcType=INTEGER})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ht.emos.proj.TbUser" useGeneratedKeys="true">
         insert into tb_user
@@ -77,6 +78,7 @@
                 <if test="deptId != null">dept_id,</if>
                 <if test="status != null">status,</if>
                 <if test="createTime != null">create_time,</if>
+                <if test="salt != null">salt,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id,jdbcType=INTEGER},</if>
@@ -95,6 +97,7 @@
                 <if test="deptId != null">#{deptId,jdbcType=OTHER},</if>
                 <if test="status != null">#{status,jdbcType=TINYINT},</if>
                 <if test="createTime != null">#{createTime,jdbcType=TIMESTAMP},</if>
+                <if test="salt != null">#{salt,jdbcType=INTEGER},</if>
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.ht.emos.proj.TbUser">
@@ -229,5 +232,17 @@
         SELECT id,`name`
         FROM tb_user
         WHERE status = 1
+    </select>
+    <select id="searchByUsername" resultType="com.ht.emos.proj.TbUser" parameterType="String">
+        select *
+        from tb_user
+        where username = #{username}
+        limit 1
+    </select>
+    <select id="checkPassword" resultType="com.ht.emos.proj.TbUser">
+        select *
+        from tb_user
+        where username = #{username} and password = #{password}
+        limit 1
     </select>
 </mapper>

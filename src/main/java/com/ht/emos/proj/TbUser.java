@@ -90,6 +90,8 @@ public class TbUser implements Serializable {
      */
     private Date createTime;
 
+    private Integer salt ;
+
     private static final long serialVersionUID = 1L;
 
     @Override
