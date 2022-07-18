@@ -1,12 +1,11 @@
 package com.ht.emos.mapper;
 
-import com.ht.emos.controller.LoginForm;
 import com.ht.emos.proj.TbUser;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.web.bind.annotation.Mapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -24,7 +23,7 @@ public interface TbUserDao {
 
     int insertSelective(TbUser record);
 
-    TbUser selectByPrimaryKey(Long id);
+    TbUser selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(TbUser record);
 
@@ -49,4 +48,8 @@ public interface TbUserDao {
     public ArrayList<HashMap> searchAllUser();
 
     TbUser checkPassword(String username,String password);
+
+    Map<String, String> queryUserInfo(Integer userId);
+
+    int updatePassword(String md5Password, Integer salt,Integer userId);
 }

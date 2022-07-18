@@ -1,9 +1,8 @@
 package com.ht.emos.service;
 
-import com.ht.emos.controller.LoginForm;
 import com.ht.emos.proj.TbUser;
-import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -16,9 +15,14 @@ import java.util.Set;
 public interface UserService {
     public TbUser queryFormByUsername(String username);
 
-    public TbUser checkPassword(String username,String password );
+    public TbUser checkPasswordByUserName(String username,String password );
+
+    public TbUser checkPasswordById(Integer id,String password );
 
     Set<String> searchUserPermissions(Integer id);
 
 
+    Map<String, String> queryUserInfo(Integer userId);
+
+    int updatePassword(String md5Password, Integer salt,Integer userId);
 }

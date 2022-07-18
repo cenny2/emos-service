@@ -8,6 +8,10 @@ package com.ht.emos.common.util;
  */
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+
 public class MD5Utils {
     /**
      * 对源数据生成MD5摘要
@@ -34,6 +38,18 @@ public class MD5Utils {
         String md5 = DigestUtils.md5Hex(target);
         return md5;
     }
+
+    public static Map<String ,Object> growthPassword(String source){
+        Integer salt =  new Random().nextInt(500);
+        String password = MD5Utils.md5Digest(source, salt);
+        Map map = new HashMap(){{
+            put("salt",salt);
+            put("password",password);
+        }};
+        return map;
+    }
+
+
 
 }
 

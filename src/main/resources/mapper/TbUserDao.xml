@@ -33,14 +33,14 @@
         create_time,salt
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from tb_user
         where  id = #{id,jdbcType=INTEGER} 
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from tb_user
         where  id = #{id,jdbcType=INTEGER} 
     </delete>
@@ -172,6 +172,12 @@
         where   id = #{id,jdbcType=INTEGER} 
     </update>
 
+    <update id="updatePassword">
+        update tb_user
+        set salt = #{salt} , password = #{md5Password}
+        where id = #{userId}
+    </update>
+
     <select id="searchUserPermissions" parameterType="int" resultType="String">
         SELECT DISTINCT p.permission_name
         FROM tb_user u
@@ -243,6 +249,13 @@
         select *
         from tb_user
         where username = #{username} and password = #{password}
+        limit 1
+    </select>
+    <select id="queryUserInfo" resultType="java.util.Map" parameterType="Integer">
+        select user.id,user.name ,user.photo,dept.dept_name as deptName
+        from tb_user user
+        left join tb_dept dept on user.dept_id =  dept.id
+        where user.id = #{userId} and user.status = 1
         limit 1
     </select>
 </mapper>

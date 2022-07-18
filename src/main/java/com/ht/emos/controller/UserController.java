@@ -1,20 +1,20 @@
 package com.ht.emos.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
-import com.ht.emos.common.dataenum.CommonEnum;
+import com.ht.emos.common.exception.EmosException;
 import com.ht.emos.common.util.MD5Utils;
 import com.ht.emos.common.util.ResultObject;
-import com.ht.emos.mapper.TbUserDao;
+import com.ht.emos.controller.form.LoginForm;
+import com.ht.emos.controller.form.PasswordForm;
 import com.ht.emos.proj.TbUser;
 import com.ht.emos.service.UserService;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Value;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import javax.xml.transform.Result;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -24,6 +24,7 @@ import java.util.Set;
  * @Author Wuc
  * @Date 2022/7/16 20:07
  */
+@CrossOrigin("**")
 @RestController
 @RequestMapping("/user")
 @Schema(description = "用户Controller")
@@ -48,7 +49,7 @@ public class UserController {
         //获取加盐后的密码
         String paswsword = MD5Utils.md5Digest(loginForm.getPassword(), userVo.getSalt());
         //密码校验
-        TbUser tbUser = userService.checkPassword(loginForm.getUsername(), paswsword);
+        TbUser tbUser = userService.checkPasswordByUserName(loginForm.getUsername(), paswsword);
         if (Objects.isNull(tbUser)) {
             return new ResultObject().put("result", false);
         }
@@ -65,6 +66,50 @@ public class UserController {
         return result;
     }
 
+    @GetMapping("loadUserInfo")
+    public ResultObject loadUserInfo(){
+        System.out.println(StpUtil.isLogin());
+        System.out.println(StpUtil.getLoginIdAsInt());
+
+        Integer userId = StpUtil.getLoginIdAsInt();
+        Map<String,String> userInfo = userService.queryUserInfo(userId);
+        if (Objects.isNull(userInfo)){
+            throw new EmosException("找不到员工信息");
+        }
+        return ResultObject.isOk().put("result",userInfo);
+    }
+
+    @PostMapping("logout")
+    public ResultObject logout(){
+        StpUtil.logout();
+        return ResultObject.isOk();
+    }
+
+    /**
+     * 用户修改密码
+     * @SaCheckLogin:校验用户是否登录，登录才能修改密码
+     * @return 返回数据
+     */
+    @SaCheckLogin
+    @PostMapping("updatePassword")
+    public ResultObject updatePassword(@RequestBody @Valid PasswordForm passwordForm){
+        Integer userId = StpUtil.getLoginIdAsInt();
+        //判断旧密码是否与数据库的密码匹配
+        TbUser tbUser = userService.checkPasswordById(userId, passwordForm.getPassword());
+        String oldPsw = MD5Utils.md5Digest(passwordForm.getPassword(), tbUser.getSalt());
+        //输入的密码是否和数据库的密码一致
+        if (!oldPsw.equals(tbUser.getPassword())){
+            return new ResultObject().put("rows",0).put("msg","原始密码输入错误！");
+
+        }else{
+            Map<String, Object> map = MD5Utils.growthPassword(passwordForm.getNewPassword());
+            Integer salt = (Integer) map.get("salt");
+            String md5Password = map.get("password").toString();
+            int rows = userService.updatePassword(md5Password,salt,userId);
+            return ResultObject.isOk().put("rows",rows).put("msg","密码修改成功！");
+        }
 
 
+
+    }
 }
