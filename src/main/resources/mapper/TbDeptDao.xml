@@ -14,14 +14,19 @@
 
     <sql id="Base_Column_List">
         id,dept_name,tel,
-        email,desc
+        email,`desc`
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultType="com.ht.emos.proj.TbDept">
         select
         <include refid="Base_Column_List" />
         from tb_dept
         where  id = #{id,jdbcType=OTHER} 
+    </select>
+    <select id="queryAllDept" resultType="com.ht.emos.proj.TbDept">
+        select
+        <include refid="Base_Column_List" />
+        from tb_dept
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

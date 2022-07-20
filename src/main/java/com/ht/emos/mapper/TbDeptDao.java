@@ -3,6 +3,8 @@ package com.ht.emos.mapper;
 import com.ht.emos.proj.TbDept;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Wuc
 * @description 针对表【tb_dept】的数据库操作Mapper
@@ -23,5 +25,7 @@ public interface TbDeptDao {
     int updateByPrimaryKeySelective(TbDept record);
 
     int updateByPrimaryKey(TbDept record);
+
+    List<TbDept> queryAllDept();
 
 }
