@@ -15,7 +15,7 @@
 
     <sql id="Base_Column_List">
         id,role_name,permissions,
-        desc,default_permissions,systemic
+        `desc`,default_permissions,systemic
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -23,6 +23,11 @@
         <include refid="Base_Column_List" />
         from tb_role
         where  id = #{id,jdbcType=OTHER} 
+    </select>
+    <select id="queryAllRole" resultType="com.ht.emos.proj.TbRole">
+        select
+        <include refid="Base_Column_List" />
+        from tb_role
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">

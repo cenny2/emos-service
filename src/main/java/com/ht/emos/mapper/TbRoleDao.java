@@ -3,6 +3,8 @@ package com.ht.emos.mapper;
 import com.ht.emos.proj.TbRole;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author Wuc
 * @description 针对表【tb_role(角色表)】的数据库操作Mapper
@@ -24,4 +26,5 @@ public interface TbRoleDao {
 
     int updateByPrimaryKey(TbRole record);
 
+    List<TbRole> queryAllRole();
 }
