@@ -3,10 +3,7 @@ package com.ht.emos.mapper;
 import com.ht.emos.proj.TbUser;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
 * @author Wuc
@@ -49,7 +46,13 @@ public interface TbUserDao {
 
     TbUser checkPassword(String username,String password);
 
-    Map<String, String> queryUserInfo(Integer userId);
+    HashMap queryUserInfo(Integer userId);
 
     int updatePassword(String md5Password, Integer salt,Integer userId);
+
+    List<HashMap> queryUserByPage(HashMap hashMap);
+
+    Integer queryPageCount(HashMap hashMap);
+
+
 }

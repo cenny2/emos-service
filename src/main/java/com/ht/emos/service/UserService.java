@@ -1,7 +1,9 @@
 package com.ht.emos.service;
 
+import com.ht.emos.common.util.PageUtils;
 import com.ht.emos.proj.TbUser;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,4 +27,7 @@ public interface UserService {
     Map<String, String> queryUserInfo(Integer userId);
 
     int updatePassword(String md5Password, Integer salt,Integer userId);
+
+    PageUtils queryByPage(HashMap hashMap);
+
 }

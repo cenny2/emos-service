@@ -251,11 +251,67 @@
         where username = #{username} and password = #{password}
         limit 1
     </select>
-    <select id="queryUserInfo" resultType="java.util.Map" parameterType="Integer">
+    <select id="queryUserInfo"  parameterType="Integer" resultType="java.util.HashMap">
         select user.id,user.name ,user.photo,dept.dept_name as deptName
         from tb_user user
         left join tb_dept dept on user.dept_id =  dept.id
         where user.id = #{userId} and user.status = 1
         limit 1
     </select>
+    <select id="queryUserByPage" resultType="java.util.HashMap">
+        select user.name      as name,
+               user.sex,
+               user.tel,
+               user.email,
+               user.hiredate,
+               (select GROUP_CONCAT(role.role_name)
+                from tb_role as role
+        where JSON_CONTAINS(user.role, CONVERT(role.id, CHAR))
+            )              as roleName,
+            dept.dept_name as deptName,
+            user.status    as status
+        from tb_user as user
+        where 1=1
+        <if test="name != null">
+            and user.name like "%${name}%"
+        </if>
+
+        <if test="sex != null">
+            and user.sex = #{sex}
+        </if>
+        <if test="role != null">
+            and user.role = #{role}
+        </if>
+        <if test="deptId != null">
+            and user.dept_id = #{deptId}
+        </if>
+        <if test="status != null">
+            and user.status = #{status}
+        </if>
+    </select>
+
+
+    <select id="queryPageCount" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        select count(distinct user.id) from tb_user user
+        left join  tb_role role on JSON_CONTAINS(user.role, CONVERT(role.id, CHAR))
+        where 1=1
+        <if test="name != null">
+            and user.name like "%${name}%"
+        </if>
+
+        <if test="sex != null">
+            and user.sex = #{sex}
+        </if>
+        <if test="role != null">
+            and user.role = #{role}
+        </if>
+        <if test="deptId != null">
+            and user.dept_id = #{deptId}
+        </if>
+        <if test="status != null">
+            and user.status = #{status}
+        </if>
+        limit #{start},#{length}
+    </select>
+
 </mapper>

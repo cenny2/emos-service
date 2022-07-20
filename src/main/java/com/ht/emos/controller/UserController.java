@@ -1,19 +1,26 @@
 package com.ht.emos.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.json.JSONUtil;
 import com.ht.emos.common.exception.EmosException;
 import com.ht.emos.common.util.MD5Utils;
+import com.ht.emos.common.util.PageUtils;
 import com.ht.emos.common.util.ResultObject;
 import com.ht.emos.controller.form.LoginForm;
 import com.ht.emos.controller.form.PasswordForm;
+import com.ht.emos.controller.form.QueryUserByPageForm;
 import com.ht.emos.proj.TbUser;
 import com.ht.emos.service.UserService;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -108,8 +115,22 @@ public class UserController {
             int rows = userService.updatePassword(md5Password,salt,userId);
             return ResultObject.isOk().put("rows",rows).put("msg","密码修改成功！");
         }
+    }
 
+    @GetMapping("/queryUserByPage")
+    @SaCheckPermission(value = {"ROOT","USER:SELECT"}, mode = SaMode.OR)
+    public ResultObject searchUserByPage(@RequestBody @Valid QueryUserByPageForm queryUserByPageForm){
+        //每页多少条数据
+        Integer length = queryUserByPageForm.getLength();
+        //第几页
+        Integer page = queryUserByPageForm.getPage();
+        Integer start = (page - 1)*length;
+        HashMap hashMap = JSONUtil.parse(queryUserByPageForm).toBean(HashMap.class);
+        hashMap.put("start",start);
+        PageUtils pageUtils = userService.queryByPage(hashMap);
 
+        return ResultObject.isOk().put("page",pageUtils);
 
     }
+
 }
