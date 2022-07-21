@@ -271,6 +271,7 @@
             dept.dept_name as deptName,
             user.status    as status
         from tb_user as user
+        left join tb_dept dept on user.dept_id = dept.id
         where 1=1
         <if test="name != null">
             and user.name like "%${name}%"
@@ -288,6 +289,7 @@
         <if test="status != null">
             and user.status = #{status}
         </if>
+        limit #{start},#{length}
     </select>
 
 
@@ -311,7 +313,7 @@
         <if test="status != null">
             and user.status = #{status}
         </if>
-        limit #{start},#{length}
+
     </select>
 
 </mapper>

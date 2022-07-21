@@ -117,7 +117,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/queryUserByPage")
+    @PostMapping("/queryUserByPage")
     @SaCheckPermission(value = {"ROOT","USER:SELECT"}, mode = SaMode.OR)
     public ResultObject searchUserByPage(@RequestBody @Valid QueryUserByPageForm queryUserByPageForm){
         //每页多少条数据
